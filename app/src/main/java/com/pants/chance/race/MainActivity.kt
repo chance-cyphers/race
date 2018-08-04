@@ -1,13 +1,63 @@
 package com.pants.chance.race
 
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_main.*
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.*
+
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        checkPermission()
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    val lat = location?.latitude.toString()
+                    val lon = location?.longitude.toString()
+                    val newText = """$lat, $lon"""
+                    theText.text = newText
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(createLocationRequest(), locationCallback, null)
     }
+
+    fun createLocationRequest() : LocationRequest{
+        return LocationRequest().apply {
+            interval = 1000
+            fastestInterval = 500
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+    }
+
+
+    private fun checkPermission() {
+        val hasntPermissions = ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+
+        if (hasntPermissions) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 123
+            )
+        }
+    }
+
 
 }
