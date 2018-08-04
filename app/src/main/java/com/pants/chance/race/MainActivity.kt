@@ -1,13 +1,12 @@
 package com.pants.chance.race
 
 import android.content.pm.PackageManager
-import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +27,7 @@ class MainActivity : AppCompatActivity() {
                 for (location in locationResult.locations) {
                     val lat = location?.latitude.toString()
                     val lon = location?.longitude.toString()
+                    
                     val newText = """$lat, $lon"""
                     theText.text = newText
                 }
@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }
-
 
     private fun checkPermission() {
         val hasntPermissions = ContextCompat.checkSelfPermission(

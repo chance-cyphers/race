@@ -12,6 +12,8 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val distance =
+            getDistanceFromLatLon(42.2106744F, -83.6209295F, 42.2080708F, -83.593632F)
+        assertEquals(4, distance)
     }
 }
