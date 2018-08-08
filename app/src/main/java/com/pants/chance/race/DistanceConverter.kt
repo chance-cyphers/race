@@ -1,6 +1,6 @@
 package com.pants.chance.race
 
-fun getDistanceFromLatLon(lat1: Float, lon1: Float, lat2: Float, lon2: Float) : Double {
+fun getDistanceFromLatLon(lat1: Double, lon1: Double, lat2: Double, lon2: Double) : Double {
     val rads = 6371
     val deltaLats = deg2Rad(lat2 - lat1)
     val deltaLons = deg2Rad(lon2 - lon1)
@@ -11,4 +11,4 @@ fun getDistanceFromLatLon(lat1: Float, lon1: Float, lat2: Float, lon2: Float) : 
     return rads * c
 }
 
-private fun deg2Rad(deg: Float) = deg * (Math.PI/180)
+private fun deg2Rad(deg: Double) = deg * (Math.PI/180)

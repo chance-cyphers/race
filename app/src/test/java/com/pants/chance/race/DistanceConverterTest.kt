@@ -13,7 +13,7 @@ class DistanceConverterTest {
     @Test
     fun addition_isCorrect() {
         val distance =
-            getDistanceFromLatLon(42.2106744F, -83.6209295F, 42.2080708F, -83.593632F)
+            getDistanceFromLatLon(42.2106744, -83.6209295, 42.2080708, -83.593632)
         val distanceFromSomeCalculatorOnline = 2.267
         assertEquals(distanceFromSomeCalculatorOnline, distance, .001)
     }

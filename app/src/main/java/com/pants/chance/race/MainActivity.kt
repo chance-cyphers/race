@@ -24,20 +24,15 @@ class MainActivity : AppCompatActivity() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                for (location in locationResult.locations) {
-                    val lat = location?.latitude.toString()
-                    val lon = location?.longitude.toString()
-                    
-                    val newText = """$lat, $lon"""
-                    theText.text = newText
-                }
+                locationResult.locations.forEach { Trip.record(it) }
+                theText.text = """dist travelled: ${Trip.getDistance()}"""
             }
         }
 
         fusedLocationClient.requestLocationUpdates(createLocationRequest(), locationCallback, null)
     }
 
-    fun createLocationRequest() : LocationRequest{
+    private fun createLocationRequest() : LocationRequest{
         return LocationRequest().apply {
             interval = 1000
             fastestInterval = 500
