@@ -14,6 +14,7 @@ import com.auth0.android.provider.AuthCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import android.content.Intent
+import android.util.Log
 import kotlinx.android.synthetic.main.login.*
 
 
@@ -49,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }
                 override fun onSuccess(payload: Credentials?) {
+                    Log.i("token", payload?.idToken)
                     showNextActivity(payload)
                 }
             })
@@ -67,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
         WebAuthProvider.init(auth0)
             .withScheme("demo")
             .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
-            .withScope("openid offline_access")
+            .withScope("openid offline_access email profile read:current_user")
             .start(this@LoginActivity, object : AuthCallback {
                 override fun onFailure(dialog: Dialog) {
                 }
