@@ -11,7 +11,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "demo"]
+        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain",
+                                auth0Scheme: "demo",
+                                HOCKEYAPP_APP_ID: "7abdd3d2bdb94f20a684bff33a1085ea"]
     }
     buildTypes {
         release {
@@ -31,7 +33,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 
-    implementation 'com.auth0.android:auth0:1.+'
+    implementation 'com.auth0.android:auth0:1.13.2'
+    implementation 'net.hockeyapp.android:HockeySDK:5.1.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
