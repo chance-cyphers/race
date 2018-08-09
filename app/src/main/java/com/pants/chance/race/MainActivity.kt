@@ -7,11 +7,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import net.hockeyapp.android.UpdateManager
 import net.hockeyapp.android.CrashManager
 
-
-
-
-
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
