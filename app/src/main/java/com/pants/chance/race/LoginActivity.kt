@@ -26,7 +26,6 @@ class LoginActivity : AppCompatActivity() {
         const val EXTRA_ID_TOKEN = "com.auth0.ID_TOKEN"
     }
 
-    private val CODE_DEVICE_AUTHENTICATION = 22
     private lateinit var auth0: Auth0
     private lateinit var credentialsManager: SecureCredentialsManager
 
