@@ -14,9 +14,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         logoutButton.setOnClickListener { logout() }
+
         distanceTravelledButton.setOnClickListener {
             startActivity(Intent(this, DistanceTravelledActivity::class.java))
         }
+
+        raceButton.setOnClickListener {
+            startActivity(Intent(this, LobbyActivity::class.java))
+        }
+
         checkForUpdates()
     }
 
@@ -54,6 +60,5 @@ class MainActivity : AppCompatActivity() {
     private fun unregisterManagers() {
         UpdateManager.unregister()
     }
-
 
 }

@@ -11,8 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain",
-                                auth0Scheme: "demo",
+        manifestPlaceholders = [auth0Domain     : "@string/com_auth0_domain",
+                                auth0Scheme     : "demo",
                                 HOCKEYAPP_APP_ID: "7abdd3d2bdb94f20a684bff33a1085ea"]
     }
     buildTypes {
@@ -25,7 +25,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.auth0.android:auth0:1.13.2'
     implementation 'net.hockeyapp.android:HockeySDK:5.1.0'
 
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
