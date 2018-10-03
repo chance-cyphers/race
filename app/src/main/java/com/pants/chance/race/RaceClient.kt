@@ -6,12 +6,17 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Url
 
 interface RaceClient {
 
     @POST("/entrant")
     fun createEntrant(@Body request: CreateEntrantRequest) : Single<Response<CreateEntrantResponse>>
+
+    @GET
+    fun getTrack(@Url url: String) : Single<Response<Track>>
 
     companion object {
         fun create() : RaceClient{
@@ -35,3 +40,5 @@ data class CreateEntrantResponse (val userId: String, val id: Int, val links: Li
     data class Links (val track: String)
 }
 
+data class Track (val status: String, val entrants: List<Entrant>)
+data class Entrant (val id: Int, val userId: String)

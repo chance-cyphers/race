@@ -12,19 +12,24 @@ class RaceClientTest {
     @Test
     @Ignore
     fun createEntrant_doesSomethingInteresting() {
-        val retrofit = Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .baseUrl("https://race-apu.herokuapp.com")
-            .build()
-
-        val raceClient = retrofit.create(RaceClient::class.java)
-
-        val entrant = raceClient.createEntrant(CreateEntrantRequest("brian boitano"))
+        raceClient.createEntrant(CreateEntrantRequest("brian boitano"))
             .map { it: Response<CreateEntrantResponse> -> it.body() }
             .subscribe { it ->
                 println("entrant: $it")
             }
+    }
+
+    @Test
+    fun getTrack_getsFromGivenUrl() {
+        raceClient.getTrack("https://race-apu.herokuapp.com/track/17")
+            .map { it.body() }
+            .subscribe ({ it ->
+                println("track: ${it?.status}")
+                println("track: ${it?.entrants}")
+            }, {
+                println("whoops")
+            })
+        Thread.sleep(1500)
     }
 }
 
