@@ -84,11 +84,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
-//val retrofit = Retrofit.Builder()
-//    .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-//    .addConverterFactory(MoshiConverterFactory.create())
-//    .baseUrl("https://race-apu.herokuapp.com")
-//    .build()
-//
-//val raceClient = retrofit.create(RaceClient::class.java)
