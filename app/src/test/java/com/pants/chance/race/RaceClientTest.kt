@@ -17,6 +17,7 @@ class RaceClientTest {
             .subscribe { it ->
                 println("entrant: $it")
             }
+        Thread.sleep(1500)
     }
 
     @Test

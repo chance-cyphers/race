@@ -2,6 +2,7 @@ package com.pants.chance.race
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -20,7 +21,7 @@ class LobbyActivity : AppCompatActivity() {
         val trackLink = intent.getStringExtra("trackLink")
         lobbyText.text = "fetching track..."
 
-        raceClient.getTrack("https://$trackLink")
+        raceClient.getTrack(trackLink)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it ->
                 lobbyText.text = "your track: ${it.body().toString()}" }
