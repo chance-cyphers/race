@@ -15,6 +15,7 @@ import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import android.content.Intent
 import android.util.Log
+import com.pants.chance.race.home.MainActivity
 import kotlinx.android.synthetic.main.login.*
 
 
