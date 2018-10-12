@@ -4,8 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.pants.chance.race.*
-import com.spotify.mobius.*
+import com.pants.chance.race.DistanceTravelledActivity
+import com.pants.chance.race.LobbyActivity
+import com.pants.chance.race.LoginActivity
+import com.pants.chance.race.R
+import com.spotify.mobius.Connection
+import com.spotify.mobius.First
+import com.spotify.mobius.Mobius
+import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.android.MobiusAndroid
 import com.spotify.mobius.functions.Consumer
 import io.reactivex.disposables.CompositeDisposable
@@ -22,25 +28,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        logoutButton.setOnClickListener { logout() }
+        val loopBuilder = Mobius.loop(
+            ::update,
+            createEffectHandler(this::gotoLobby, this::logout, this::gotoDistanceTravelled)
+        ).init { First.first(it) }
 
-        distanceTravelledButton.setOnClickListener {
-            startActivity(Intent(this, DistanceTravelledActivity::class.java))
-        }
+        controller = MobiusAndroid.controller(loopBuilder, 23)
+        controller.connect(this::connectViews)
 
-        setupRaceButton()
         checkForUpdates()
     }
 
-    private fun setupRaceButton() {
-        val loopBuilder = Mobius.loop(::update, createEffectHandler(this::gotoLobby))
-            .init { First.first(it) }
-        controller = MobiusAndroid.controller(loopBuilder, 23)
-        controller.connect(this::connectViews)
-    }
-
     private fun connectViews(eventConsumer: Consumer<Event>): Connection<Int> {
+        distanceTravelledButton.setOnClickListener { eventConsumer.accept(DistanceTravelledPressed) }
         raceButton.setOnClickListener { eventConsumer.accept(RacePressed) }
+        logoutButton.setOnClickListener { eventConsumer.accept(LogoutPressed) }
 
         return object : Connection<Int> {
             override fun accept(model: Int) {
@@ -49,8 +51,14 @@ class MainActivity : AppCompatActivity() {
 
             override fun dispose() {
                 raceButton.setOnClickListener(null)
+                distanceTravelledButton.setOnClickListener(null)
+                logoutButton.setOnClickListener(null)
             }
         }
+    }
+
+    private fun gotoDistanceTravelled() {
+        startActivity(Intent(this, DistanceTravelledActivity::class.java))
     }
 
     private fun gotoLobby(trackLink: String) {
@@ -60,9 +68,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true)
-        startActivity(intent)
+        val logoutIntent = Intent(this, LoginActivity::class.java)
+        logoutIntent.putExtra(LoginActivity.KEY_CLEAR_CREDENTIALS, true)
+        startActivity(logoutIntent)
         finish()
     }
 

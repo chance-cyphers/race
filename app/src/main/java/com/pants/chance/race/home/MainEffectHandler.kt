@@ -1,21 +1,21 @@
 package com.pants.chance.race.home
 
-import android.util.Log
 import com.pants.chance.race.CreateEntrantRequest
 import com.pants.chance.race.raceClient
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 
-fun createEffectHandler(gotoLobby: (String) -> Unit): (Consumer<Event>) -> Connection<Effect> {
-    Log.i("qwerty", "creating effect handler")
+fun createEffectHandler(
+    gotoLobby: (String) -> Unit,
+    logout: () -> Unit,
+    gotoDistanceTravelled: () -> Unit
+): (Consumer<Event>) -> Connection<Effect> {
 
     return fun(eventConsumer: Consumer<Event>): Connection<Effect> {
         return object : Connection<Effect> {
             override fun accept(effect: Effect) {
                 when (effect) {
                     CreateEntrant -> {
-                        Log.i("qwerty", "creating entrant...")
-
                         raceClient.createEntrant(CreateEntrantRequest("bob francis"))
                             .map { it.body() ?: throw Exception("whoops") }
                             .subscribe { it ->
@@ -25,6 +25,8 @@ fun createEffectHandler(gotoLobby: (String) -> Unit): (Consumer<Event>) -> Conne
                     is GotoLobby -> {
                         gotoLobby(effect.entrant.links.track)
                     }
+                    is Logout -> logout()
+                    is GotoDistanceTravelled -> gotoDistanceTravelled()
                 }
             }
 
