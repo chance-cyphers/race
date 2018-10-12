@@ -7,7 +7,7 @@ object Trip {
     private val coords : MutableList<Pair<Double, Double>> = mutableListOf()
 
     fun record(loc: Location) {
-        coords.add(Pair(loc.latitude, loc.longitude))
+        coords.add(loc.latitude to loc.longitude)
     }
 
     fun getDistance() : Double {
