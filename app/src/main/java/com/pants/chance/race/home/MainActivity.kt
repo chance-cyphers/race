@@ -4,10 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.pants.chance.race.DistanceTravelledActivity
-import com.pants.chance.race.LobbyActivity
-import com.pants.chance.race.LoginActivity
-import com.pants.chance.race.R
+import com.pants.chance.race.*
+import com.pants.chance.race.LoginActivity.Companion.EXTRA_ACCESS_TOKEN
+import com.pants.chance.race.LoginActivity.Companion.EXTRA_ID_TOKEN
 import com.spotify.mobius.Connection
 import com.spotify.mobius.First
 import com.spotify.mobius.Mobius
@@ -23,10 +22,13 @@ class MainActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
     private lateinit var controller: MobiusLoop.Controller<Int, Event>
+    private lateinit var idToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        idToken = intent.getStringExtra(EXTRA_ID_TOKEN)
 
         val loopBuilder = Mobius.loop(
             ::update,
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun connectViews(eventConsumer: Consumer<Event>): Connection<Int> {
         distanceTravelledButton.setOnClickListener { eventConsumer.accept(DistanceTravelledPressed) }
-        raceButton.setOnClickListener { eventConsumer.accept(RacePressed) }
+        raceButton.setOnClickListener { eventConsumer.accept(RacePressed(getName(idToken).orEmpty())) }
         logoutButton.setOnClickListener { eventConsumer.accept(LogoutPressed) }
 
         return object : Connection<Int> {
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     private fun gotoLobby(trackLink: String) {
         val lobbyIntent = Intent(this, LobbyActivity::class.java)
         lobbyIntent.putExtra("trackLink", trackLink)
+        lobbyIntent.putExtra("name", getName(idToken))
         startActivity(lobbyIntent)
     }
 

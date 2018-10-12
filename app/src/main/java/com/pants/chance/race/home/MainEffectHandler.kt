@@ -15,8 +15,8 @@ fun createEffectHandler(
         return object : Connection<Effect> {
             override fun accept(effect: Effect) {
                 when (effect) {
-                    CreateEntrant -> {
-                        raceClient.createEntrant(CreateEntrantRequest("bob francis"))
+                    is CreateEntrant -> {
+                        raceClient.createEntrant(CreateEntrantRequest(effect.username))
                             .map { it.body() ?: throw Exception("whoops") }
                             .subscribe { it ->
                                 eventConsumer.accept(EntrantCreated(it))
