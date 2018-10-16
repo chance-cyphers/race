@@ -1,9 +1,10 @@
 package com.pants.chance.race.home
 
+import com.pants.chance.race.*
 import com.spotify.mobius.Effects
 import com.spotify.mobius.Next
 
-fun update(model: Int, event: Event): Next<Int, Effect> {
+fun update(model: Int, event: MainEvent): Next<Int, MainEffect> {
     return when (event) {
         is RacePressed -> Next.dispatch(Effects.effects(CreateEntrant(event.username)))
         is EntrantCreated -> Next.dispatch(Effects.effects(GotoLobby(event.entrant)))

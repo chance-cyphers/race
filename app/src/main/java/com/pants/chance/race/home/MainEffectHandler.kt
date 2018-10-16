@@ -1,7 +1,6 @@
 package com.pants.chance.race.home
 
-import com.pants.chance.race.CreateEntrantRequest
-import com.pants.chance.race.raceClient
+import com.pants.chance.race.*
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 
@@ -9,11 +8,11 @@ fun createEffectHandler(
     gotoLobby: (String) -> Unit,
     logout: () -> Unit,
     gotoDistanceTravelled: () -> Unit
-): (Consumer<Event>) -> Connection<Effect> {
+): (Consumer<MainEvent>) -> Connection<MainEffect> {
 
-    return fun(eventConsumer: Consumer<Event>): Connection<Effect> {
-        return object : Connection<Effect> {
-            override fun accept(effect: Effect) {
+    return fun(eventConsumer: Consumer<MainEvent>): Connection<MainEffect> {
+        return object : Connection<MainEffect> {
+            override fun accept(effect: MainEffect) {
                 when (effect) {
                     is CreateEntrant -> {
                         raceClient.createEntrant(CreateEntrantRequest(effect.username))

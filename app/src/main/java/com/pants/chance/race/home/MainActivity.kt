@@ -2,10 +2,8 @@ package com.pants.chance.race.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.*
-import com.pants.chance.race.LoginActivity.Companion.EXTRA_ACCESS_TOKEN
 import com.pants.chance.race.LoginActivity.Companion.EXTRA_ID_TOKEN
 import com.spotify.mobius.Connection
 import com.spotify.mobius.First
@@ -13,15 +11,13 @@ import com.spotify.mobius.Mobius
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.android.MobiusAndroid
 import com.spotify.mobius.functions.Consumer
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import net.hockeyapp.android.CrashManager
 import net.hockeyapp.android.UpdateManager
 
 class MainActivity : AppCompatActivity() {
 
-    private val compositeDisposable = CompositeDisposable()
-    private lateinit var controller: MobiusLoop.Controller<Int, Event>
+    private lateinit var controller: MobiusLoop.Controller<Int, MainEvent>
     private lateinit var idToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,14 +37,17 @@ class MainActivity : AppCompatActivity() {
         checkForUpdates()
     }
 
-    private fun connectViews(eventConsumer: Consumer<Event>): Connection<Int> {
+    private fun connectViews(eventConsumer: Consumer<MainEvent>): Connection<Int> {
         distanceTravelledButton.setOnClickListener { eventConsumer.accept(DistanceTravelledPressed) }
-        raceButton.setOnClickListener { eventConsumer.accept(RacePressed(getName(idToken).orEmpty())) }
+        raceButton.setOnClickListener { eventConsumer.accept(
+            RacePressed(
+                getName(idToken).orEmpty()
+            )
+        ) }
         logoutButton.setOnClickListener { eventConsumer.accept(LogoutPressed) }
 
         return object : Connection<Int> {
             override fun accept(model: Int) {
-                Log.i("qwerty", "accepting event with model: $model")
             }
 
             override fun dispose() {
@@ -101,7 +100,6 @@ class MainActivity : AppCompatActivity() {
     public override fun onDestroy() {
         super.onDestroy()
         unregisterManagers()
-        compositeDisposable.clear()
     }
 
     private fun unregisterManagers() {

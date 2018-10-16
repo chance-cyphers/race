@@ -2,30 +2,53 @@ package com.pants.chance.race
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.spotify.mobius.Connection
+import com.spotify.mobius.Mobius
+import com.spotify.mobius.MobiusLoop
+import com.spotify.mobius.android.MobiusAndroid
+import com.spotify.mobius.functions.Consumer
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
+    private lateinit var controller: MobiusLoop.Controller<String, LobbyEvent>
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lobby)
-
         val trackLink = intent.getStringExtra("trackLink")
-        lobbyText.text = "fetching track..."
 
-        raceClient.getTrack(trackLink)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it ->
-                lobbyText.text = "your track: ${it.body().toString()}" }
-            .addTo(compositeDisposable)
+        val loopBuilder =
+            Mobius.loop(::update, createEffectHandler())
+                .init { init(it, trackLink) }
+        controller = MobiusAndroid.controller(loopBuilder, "fetching track...")
+        controller.connect(this::connectViews)
+    }
+
+    private fun connectViews(eventConsumer: Consumer<LobbyEvent>): Connection<String> {
+
+        return object : Connection<String> {
+            override fun accept(model: String) {
+                lobbyText.text = "your track: $model"
+            }
+
+            override fun dispose() {
+            }
+        }
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        controller.start()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        controller.stop()
     }
 
     public override fun onDestroy() {

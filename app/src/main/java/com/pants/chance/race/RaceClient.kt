@@ -19,7 +19,7 @@ interface RaceClient {
     fun getTrack(@Url url: String) : Single<Response<Track>>
 
     companion object {
-        fun create() : RaceClient{
+        fun create() : RaceClient {
             val retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .addConverterFactory(MoshiConverterFactory.create())
