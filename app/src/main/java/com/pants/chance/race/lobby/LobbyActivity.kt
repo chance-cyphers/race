@@ -27,7 +27,7 @@ class LobbyActivity : AppCompatActivity() {
         val loopBuilder =
             Mobius.loop(::update, createEffectHandler(this::gotoRace))
                 .init { init(it, trackLink) }
-        controller = MobiusAndroid.controller(loopBuilder, "fetching track...")
+        controller = MobiusAndroid.controller(loopBuilder, "finding match...")
         controller.connect(this::connectViews)
     }
 
@@ -35,7 +35,7 @@ class LobbyActivity : AppCompatActivity() {
 
         return object : Connection<String> {
             override fun accept(model: String) {
-                lobbyText.text = "your track: $model"
+                lobbyText.text = model
             }
 
             override fun dispose() {

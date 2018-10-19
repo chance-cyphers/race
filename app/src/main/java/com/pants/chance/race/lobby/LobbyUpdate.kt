@@ -8,9 +8,11 @@ fun update(model: String, event: LobbyEvent): Next<String, LobbyEffect> {
     return when (event) {
         is TrackFetched -> {
             if (event.track.status == "started") {
-                Next.dispatch<String, LobbyEffect>(Effects.effects(GotoRace(event.track)))
+                val gotoRace: LobbyEffect = GotoRace(event.track)
+                Next.dispatch(Effects.effects(gotoRace))
             } else {
-                Next.next(event.track.toString())
+                val fetchTrackWithDelay: LobbyEffect = FetchTrackWithDelay(event.trackLink)
+                Next.dispatch(Effects.effects(fetchTrackWithDelay))
             }
         }
     }
