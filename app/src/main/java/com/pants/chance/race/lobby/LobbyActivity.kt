@@ -1,8 +1,9 @@
-package com.pants.chance.race
+package com.pants.chance.race.lobby
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.pants.chance.race.R
 import com.spotify.mobius.Connection
 import com.spotify.mobius.Mobius
 import com.spotify.mobius.MobiusLoop

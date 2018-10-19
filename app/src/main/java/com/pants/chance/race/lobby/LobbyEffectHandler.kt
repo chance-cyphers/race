@@ -1,5 +1,6 @@
-package com.pants.chance.race
+package com.pants.chance.race.lobby
 
+import com.pants.chance.race.raceClient
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 
@@ -12,7 +13,9 @@ fun createEffectHandler(): (Consumer<LobbyEvent>) -> Connection<LobbyEffect> {
                     is FetchTrack -> {
                         raceClient.getTrack(effect.trackLink)
                             .map { it.body() ?: throw Exception("error fetching track") }
-                            .subscribe { it -> eventConsumer.accept(TrackFetched(it))}
+                            .subscribe { it ->
+                                eventConsumer.accept(TrackFetched(it))
+                            }
                     }
                 }
             }

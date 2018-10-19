@@ -1,6 +1,7 @@
 package com.pants.chance.race.home
 
-import com.pants.chance.race.*
+import com.pants.chance.race.CreateEntrantRequest
+import com.pants.chance.race.raceClient
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 

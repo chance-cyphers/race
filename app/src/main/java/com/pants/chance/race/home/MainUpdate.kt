@@ -1,6 +1,5 @@
 package com.pants.chance.race.home
 
-import com.pants.chance.race.*
 import com.spotify.mobius.Effects
 import com.spotify.mobius.Next
 
