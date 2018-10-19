@@ -6,12 +6,17 @@ import com.spotify.mobius.Next
 
 fun update(model: String, event: LobbyEvent): Next<String, LobbyEffect> {
     return when (event) {
-        is TrackFetched -> Next.next(event.track.toString())
+        is TrackFetched -> {
+            if (event.track.status == "started") {
+                Next.dispatch<String, LobbyEffect>(Effects.effects(GotoRace(event.track)))
+            } else {
+                Next.next(event.track.toString())
+            }
+        }
     }
 }
 
 fun init(model: String, trackLink: String): First<String, LobbyEffect> {
-    val fetchTrack: LobbyEffect =
-        FetchTrack(trackLink)
+    val fetchTrack: LobbyEffect = FetchTrack(trackLink)
     return First.first(model, Effects.effects(fetchTrack))
 }

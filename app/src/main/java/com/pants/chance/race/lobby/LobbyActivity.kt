@@ -1,9 +1,11 @@
 package com.pants.chance.race.lobby
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.R
+import com.pants.chance.race.race.RaceActivity
 import com.spotify.mobius.Connection
 import com.spotify.mobius.Mobius
 import com.spotify.mobius.MobiusLoop
@@ -14,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity() {
 
-    private val compositeDisposable = CompositeDisposable()
     private lateinit var controller: MobiusLoop.Controller<String, LobbyEvent>
 
     @SuppressLint("SetTextI18n")
@@ -24,7 +25,7 @@ class LobbyActivity : AppCompatActivity() {
         val trackLink = intent.getStringExtra("trackLink")
 
         val loopBuilder =
-            Mobius.loop(::update, createEffectHandler())
+            Mobius.loop(::update, createEffectHandler(this::gotoRace))
                 .init { init(it, trackLink) }
         controller = MobiusAndroid.controller(loopBuilder, "fetching track...")
         controller.connect(this::connectViews)
@@ -42,6 +43,13 @@ class LobbyActivity : AppCompatActivity() {
         }
     }
 
+    private fun gotoRace(placeholder: String) {
+        val gotoRaceIntent = Intent(this, RaceActivity::class.java)
+        gotoRaceIntent.putExtra("placeholder", placeholder)
+        startActivity(gotoRaceIntent)
+        finish()
+    }
+
     public override fun onResume() {
         super.onResume()
         controller.start()
@@ -50,11 +58,6 @@ class LobbyActivity : AppCompatActivity() {
     public override fun onPause() {
         super.onPause()
         controller.stop()
-    }
-
-    public override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
     }
 
 }

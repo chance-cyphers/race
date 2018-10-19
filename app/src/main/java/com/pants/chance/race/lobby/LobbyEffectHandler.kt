@@ -4,7 +4,7 @@ import com.pants.chance.race.raceClient
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 
-fun createEffectHandler(): (Consumer<LobbyEvent>) -> Connection<LobbyEffect> {
+fun createEffectHandler(gotoRace: (String) -> Unit): (Consumer<LobbyEvent>) -> Connection<LobbyEffect> {
 
     return fun(eventConsumer: Consumer<LobbyEvent>): Connection<LobbyEffect> {
         return object : Connection<LobbyEffect> {
@@ -16,6 +16,9 @@ fun createEffectHandler(): (Consumer<LobbyEvent>) -> Connection<LobbyEffect> {
                             .subscribe { it ->
                                 eventConsumer.accept(TrackFetched(it))
                             }
+                    }
+                    is GotoRace -> {
+                        gotoRace("entrants: ${effect.track.entrants[0].userId}, ${effect.track.entrants[1].userId}")
                     }
                 }
             }

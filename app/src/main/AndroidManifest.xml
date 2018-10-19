@@ -28,6 +28,7 @@
         <activity android:name=".home.MainActivity" />
         <activity android:name=".DistanceTravelledActivity" />
         <activity android:name=".lobby.LobbyActivity" />
+        <activity android:name=".race.RaceActivity"></activity>
     </application>
 
 </manifest>
