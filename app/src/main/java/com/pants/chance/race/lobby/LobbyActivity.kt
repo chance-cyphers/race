@@ -11,7 +11,6 @@ import com.spotify.mobius.Mobius
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.android.MobiusAndroid
 import com.spotify.mobius.functions.Consumer
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity() {
@@ -38,8 +37,7 @@ class LobbyActivity : AppCompatActivity() {
                 lobbyText.text = model
             }
 
-            override fun dispose() {
-            }
+            override fun dispose() {}
         }
     }
 
@@ -58,6 +56,11 @@ class LobbyActivity : AppCompatActivity() {
     public override fun onPause() {
         super.onPause()
         controller.stop()
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        controller.disconnect()
     }
 
 }
