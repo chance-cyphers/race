@@ -39,9 +39,7 @@ fun createEffectHandler(gotoRace: (String) -> Unit): (Consumer<LobbyEvent>) -> C
                 }
             }
 
-            override fun dispose() {
-                compositeDisposable.clear()
-            }
+            override fun dispose() { compositeDisposable.clear() }
         }
     }
 }
