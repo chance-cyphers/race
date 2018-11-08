@@ -1,8 +1,9 @@
 package com.pants.chance.race.race
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.R
+import com.pants.chance.race.lobby.LobbyActivity
 import kotlinx.android.synthetic.main.activity_race.*
 
 class RaceActivity : AppCompatActivity() {
@@ -11,9 +12,9 @@ class RaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_race)
 
-        val placeholder = intent.getStringExtra("placeholder")
+        val locLink = intent.getStringExtra(LobbyActivity.LOCATION_LINK)
 
-        raceText.text = placeholder
+        raceText.text = "here it is: $locLink!"
     }
 
 }

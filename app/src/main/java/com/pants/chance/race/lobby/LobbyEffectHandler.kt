@@ -1,5 +1,6 @@
 package com.pants.chance.race.lobby
 
+import com.pants.chance.race.Track
 import com.pants.chance.race.raceClient
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
@@ -7,7 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import java.util.concurrent.TimeUnit
 
-fun createEffectHandler(gotoRace: (String) -> Unit): (Consumer<LobbyEvent>) -> Connection<LobbyEffect> {
+fun createEffectHandler(gotoRace: (Track) -> Unit): (Consumer<LobbyEvent>) -> Connection<LobbyEffect> {
 
     return fun(eventConsumer: Consumer<LobbyEvent>): Connection<LobbyEffect> {
         return object : Connection<LobbyEffect> {
@@ -34,7 +35,7 @@ fun createEffectHandler(gotoRace: (String) -> Unit): (Consumer<LobbyEvent>) -> C
                             .addTo(compositeDisposable)
                     }
                     is GotoRace -> {
-                        gotoRace("entrants: ${effect.track.entrants[0].userId}, ${effect.track.entrants[1].userId}")
+                        gotoRace(effect.track)
                     }
                 }
             }

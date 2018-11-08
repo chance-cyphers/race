@@ -12,7 +12,7 @@ import retrofit2.http.Url
 
 interface RaceClient {
 
-    @POST("/entrant")
+    @POST("/v2/entrant")
     fun createEntrant(@Body request: CreateEntrantRequest) : Single<Response<CreateEntrantResponse>>
 
     @GET
@@ -40,5 +40,8 @@ data class CreateEntrantResponse (val userId: String, val id: Int, val links: Li
     data class Links (val track: String)
 }
 
-data class Track (val status: String, val entrants: List<Entrant>)
+data class Track (val status: String, val entrants: List<Entrant>, val links: Links) {
+    data class Links (val locationUpdate: String)
+}
+
 data class Entrant (val id: Int, val userId: String)

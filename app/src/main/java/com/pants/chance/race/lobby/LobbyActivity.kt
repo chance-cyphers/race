@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.R
+import com.pants.chance.race.Track
 import com.pants.chance.race.race.RaceActivity
 import com.spotify.mobius.Connection
 import com.spotify.mobius.Mobius
@@ -14,6 +15,10 @@ import com.spotify.mobius.functions.Consumer
 import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity() {
+
+    companion object {
+        const val LOCATION_LINK = "locationLink"
+    }
 
     private lateinit var controller: MobiusLoop.Controller<String, LobbyEvent>
 
@@ -41,9 +46,12 @@ class LobbyActivity : AppCompatActivity() {
         }
     }
 
-    private fun gotoRace(placeholder: String) {
+
+
+    private fun gotoRace(track: Track) {
         val gotoRaceIntent = Intent(this, RaceActivity::class.java)
-        gotoRaceIntent.putExtra("placeholder", placeholder)
+        gotoRaceIntent.putExtra(LOCATION_LINK, track.links.locationUpdate)
+
         startActivity(gotoRaceIntent)
         finish()
     }
