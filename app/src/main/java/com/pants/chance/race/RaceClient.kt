@@ -18,6 +18,9 @@ interface RaceClient {
     @GET
     fun getTrack(@Url url: String) : Single<Response<Track>>
 
+    @POST
+    fun addLocation(@Url url: String, @Body request: Location) : Single<Response<Location>>
+
     companion object {
         fun create() : RaceClient {
             val retrofit = Retrofit.Builder()
@@ -45,3 +48,4 @@ data class Track (val status: String, val entrants: List<Entrant>, val links: Li
 }
 
 data class Entrant (val id: Int, val userId: String)
+data class Location (val time: Long, val lat: Double, val lon: Double)

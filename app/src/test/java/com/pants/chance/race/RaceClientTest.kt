@@ -20,18 +20,6 @@ class RaceClientTest {
         Thread.sleep(1500)
     }
 
-    @Test
-    fun getTrack_getsFromGivenUrl() {
-        raceClient.getTrack("https://race-apu.herokuapp.com/track/17")
-            .map { it.body() }
-            .subscribe ({ it ->
-                println("track: ${it?.status}")
-                println("track: ${it?.entrants}")
-            }, {
-                println("whoops")
-            })
-        Thread.sleep(1500)
-    }
 }
 
 

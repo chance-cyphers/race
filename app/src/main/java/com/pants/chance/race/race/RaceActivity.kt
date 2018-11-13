@@ -20,13 +20,13 @@ class RaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_race)
 
-
+        val locLink = intent.getStringExtra(LobbyActivity.LOCATION_LINK)
+        val raceModel = RaceModel(locLink)
         val loopBuilder = Mobius.loop(::update, createEffectHandler()).init {
-            First.first(it)
+            init(raceModel)
         }
 
-        val locLink = intent.getStringExtra(LobbyActivity.LOCATION_LINK)
-        controller = MobiusAndroid.controller(loopBuilder, RaceModel(locLink))
+        controller = MobiusAndroid.controller(loopBuilder, raceModel)
         controller.connect(this::connectViews)
     }
 
