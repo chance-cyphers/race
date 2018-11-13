@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.*
 import com.pants.chance.race.LoginActivity.Companion.EXTRA_ID_TOKEN
 import com.pants.chance.race.lobby.LobbyActivity
+import com.pants.chance.race.util.getName
 import com.spotify.mobius.Connection
 import com.spotify.mobius.First
 import com.spotify.mobius.Mobius

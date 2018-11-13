@@ -1,4 +1,4 @@
-package com.pants.chance.race
+package com.pants.chance.race.util
 
 import com.auth0.android.jwt.JWT
 
