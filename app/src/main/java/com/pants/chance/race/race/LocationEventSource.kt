@@ -2,10 +2,12 @@ package com.pants.chance.race.race
 
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.spotify.mobius.EventSource
 import com.spotify.mobius.disposables.Disposable
 import com.spotify.mobius.functions.Consumer
@@ -19,13 +21,10 @@ class LocationEventSource(private val activity: Activity) : EventSource<RaceEven
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                Log.i("qwerty", "loc result: ${locationResult.lastLocation}")
-//                eventConsumer?.accept(
-//                    LocationUpdateEvent(
-//                        locationResult.lastLocation.latitude,
-//                        locationResult.lastLocation.longitude
-//                    )
-//                )
+                val lastLocation = locationResult.lastLocation
+                eventConsumer?.accept(
+                    LocationUpdateEvent(lastLocation.latitude, lastLocation.longitude)
+                )
             }
         }
 

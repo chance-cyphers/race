@@ -2,6 +2,7 @@ package com.pants.chance.race.race
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.pants.chance.race.Location
 import com.pants.chance.race.R
 import com.pants.chance.race.lobby.LobbyActivity
 import com.spotify.mobius.Connection
@@ -35,7 +36,7 @@ class RaceActivity : AppCompatActivity() {
 
         return object : Connection<RaceModel> {
             override fun accept(model: RaceModel) {
-                raceText.text = "loc link: ${model.locLink}"
+                raceText.text = "last location: ${model.lastLoc.toString()}"
             }
 
             override fun dispose() {}
@@ -59,4 +60,4 @@ class RaceActivity : AppCompatActivity() {
 
 }
 
-data class RaceModel(val locLink: String)
+data class RaceModel(val locLink: String, val lastLoc: Location? = null)
