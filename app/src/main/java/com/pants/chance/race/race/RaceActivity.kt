@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.R
 import com.pants.chance.race.lobby.LobbyActivity
 import com.spotify.mobius.Connection
-import com.spotify.mobius.First
 import com.spotify.mobius.Mobius
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.android.MobiusAndroid
@@ -22,9 +21,11 @@ class RaceActivity : AppCompatActivity() {
 
         val locLink = intent.getStringExtra(LobbyActivity.LOCATION_LINK)
         val raceModel = RaceModel(locLink)
-        val loopBuilder = Mobius.loop(::update, createEffectHandler()).init {
-            init(raceModel)
-        }
+        val loopBuilder = Mobius.loop(::update, createEffectHandler())
+            .init {
+                init(raceModel)
+            }
+            .eventSource(LocationEventSource(this))
 
         controller = MobiusAndroid.controller(loopBuilder, raceModel)
         controller.connect(this::connectViews)

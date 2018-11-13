@@ -2,6 +2,7 @@ package com.pants.chance.race
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -30,6 +31,12 @@ class DistanceTravelledActivity : AppCompatActivity() {
 
         fusedLocationClient.requestLocationUpdates(createLocationRequest(), locationCallback, null)
     }
+
+    public override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
 
     private fun createLocationRequest(): LocationRequest {
         return LocationRequest().apply {
