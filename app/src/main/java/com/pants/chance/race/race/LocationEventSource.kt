@@ -39,8 +39,8 @@ class LocationEventSource(private val activity: Activity) : EventSource<RaceEven
 
     private fun createLocationRequest(): LocationRequest {
         return LocationRequest().apply {
-            interval = 1000
-            fastestInterval = 500
+            interval = 2000
+            fastestInterval = 100
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }
