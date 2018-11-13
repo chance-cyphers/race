@@ -1,4 +1,6 @@
 package com.pants.chance.race.race
 
+import com.pants.chance.race.Location
+
 sealed class RaceEffect
-data class UpdateLocation(val locLink: String, val lat: Double, val lon: Double) : RaceEffect()
+data class UpdateLocationEffect(val locLink: String, val loc: Location) : RaceEffect()
