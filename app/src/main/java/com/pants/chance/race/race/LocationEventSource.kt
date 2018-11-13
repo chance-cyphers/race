@@ -21,7 +21,11 @@ class LocationEventSource(private val activity: Activity) : EventSource<RaceEven
                 locationResult ?: return
                 val lastLocation = locationResult.lastLocation
                 eventConsumer?.accept(
-                    LocationUpdateEvent(lastLocation.latitude, lastLocation.longitude)
+                    LocationUpdateEvent(
+                        lastLocation.latitude,
+                        lastLocation.longitude,
+                        System.currentTimeMillis()
+                    )
                 )
             }
         }
