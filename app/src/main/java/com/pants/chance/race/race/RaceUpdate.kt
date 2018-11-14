@@ -11,5 +11,12 @@ fun update(model: RaceModel, event: RaceEvent) : Next<RaceModel, RaceEffect>{
             val updateLocEffect = UpdateLocationEffect(model.locLink, location)
             return Next.next(model.copy(lastLoc = location), Effects.effects(updateLocEffect))
         }
+        is PollTrackTick -> {
+            return if (model.lastLoc != null ){
+                Next.dispatch(Effects.effects(FetchTrack(model.locLink)))
+            } else {
+                Next.noChange()
+            }
+        }
     }
 }

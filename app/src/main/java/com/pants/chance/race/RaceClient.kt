@@ -44,7 +44,7 @@ data class CreateEntrantResponse (val userId: String, val id: Int, val links: Li
 }
 
 data class Track (val status: String, val entrants: List<Entrant>, val links: Links) {
-    data class Links (val locationUpdate: String)
+    data class Links (val locationUpdate: String, val self: String)
 }
 
 data class Entrant (val id: Int, val userId: String)

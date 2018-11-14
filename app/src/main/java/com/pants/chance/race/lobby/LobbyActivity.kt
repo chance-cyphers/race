@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_lobby.*
 class LobbyActivity : AppCompatActivity() {
 
     companion object {
+        const val TRACK_LINK = "trackLink"
         const val LOCATION_LINK = "locationLink"
     }
 
@@ -51,6 +52,7 @@ class LobbyActivity : AppCompatActivity() {
     private fun gotoRace(track: Track) {
         val gotoRaceIntent = Intent(this, RaceActivity::class.java)
         gotoRaceIntent.putExtra(LOCATION_LINK, track.links.locationUpdate)
+        gotoRaceIntent.putExtra(TRACK_LINK, track.links.self)
 
         startActivity(gotoRaceIntent)
         finish()

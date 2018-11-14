@@ -24,10 +24,15 @@ class RaceActivity : AppCompatActivity() {
         val loopBuilder = Mobius
             .loop(::update, createEffectHandler())
             .init { First.first(it) }
-            .eventSource(LocationEventSource(this))
+            .eventSources(
+                LocationEventSource(this),
+                TimerEventSource(5000)
+            )
 
         val locLink = intent.getStringExtra(LobbyActivity.LOCATION_LINK)
-        controller = MobiusAndroid.controller(loopBuilder, RaceModel(locLink))
+        val trackLink = intent.getStringExtra(LobbyActivity.TRACK_LINK)
+
+        controller = MobiusAndroid.controller(loopBuilder, RaceModel(locLink, trackLink))
         controller.connect(this::connectViews)
     }
 
@@ -35,7 +40,7 @@ class RaceActivity : AppCompatActivity() {
 
         return object : Connection<RaceModel> {
             override fun accept(model: RaceModel) {
-                raceText.text = "last location: ${model.lastLoc.toString()}"
+                raceText.text = "track link: ${model.trackLink}"
             }
 
             override fun dispose() {}
@@ -59,4 +64,8 @@ class RaceActivity : AppCompatActivity() {
 
 }
 
-data class RaceModel(val locLink: String, val lastLoc: Location? = null)
+data class RaceModel(
+    val locLink: String,
+    val trackLink: String,
+    val lastLoc: Location? = null
+)
