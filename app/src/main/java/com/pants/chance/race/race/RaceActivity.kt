@@ -40,7 +40,11 @@ class RaceActivity : AppCompatActivity() {
 
         return object : Connection<RaceModel> {
             override fun accept(model: RaceModel) {
-                raceText.text = "track link: ${model.trackLink}"
+                if (model.distance1 != null && model.distance2 != null) {
+                    raceText.text = "${model.distance1}\n\n${model.distance2}"
+                } else {
+                    raceText.text = "trackLink: ${model.trackLink}"
+                }
             }
 
             override fun dispose() {}
@@ -67,5 +71,7 @@ class RaceActivity : AppCompatActivity() {
 data class RaceModel(
     val locLink: String,
     val trackLink: String,
-    val lastLoc: Location? = null
+    val lastLoc: Location? = null,
+    val distance1: String? = null,
+    val distance2: String? = null
 )

@@ -1,13 +1,12 @@
 package com.pants.chance.race.race
 
-import android.util.Log
 import com.pants.chance.race.raceClient
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 
 fun createEffectHandler(): (Consumer<RaceEvent>) -> Connection<RaceEffect> {
 
-    return fun(_: Consumer<RaceEvent>): Connection<RaceEffect> {
+    return fun(eventConsumer: Consumer<RaceEvent>): Connection<RaceEffect> {
         return object : Connection<RaceEffect> {
 
             override fun accept(effect: RaceEffect) {
@@ -18,7 +17,11 @@ fun createEffectHandler(): (Consumer<RaceEvent>) -> Connection<RaceEffect> {
                             .subscribe()
                     }
                     is FetchTrack -> {
-                        Log.i("qwerty", "here's where we would fetch the track")
+                        raceClient.getTrack(effect.trackLink)
+                            .map { it.body() ?: throw Exception("error fetching track in race: $it") }
+                            .subscribe { it ->
+                                eventConsumer.accept(TrackFetched(it))
+                            }
                     }
                 }
             }
