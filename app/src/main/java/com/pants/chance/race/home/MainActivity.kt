@@ -3,8 +3,9 @@ package com.pants.chance.race.home
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.pants.chance.race.*
+import com.pants.chance.race.LoginActivity
 import com.pants.chance.race.LoginActivity.Companion.EXTRA_ID_TOKEN
+import com.pants.chance.race.R
 import com.pants.chance.race.lobby.LobbyActivity
 import com.pants.chance.race.util.getName
 import com.spotify.mobius.Connection
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         val loopBuilder = Mobius.loop(
             ::update,
-            createEffectHandler(this::gotoLobby, this::logout, this::gotoDistanceTravelled)
+            createEffectHandler(this::gotoLobby, this::logout)
         ).init { First.first(it) }
 
         controller = MobiusAndroid.controller(loopBuilder, 23)
@@ -40,7 +41,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun connectViews(eventConsumer: Consumer<MainEvent>): Connection<Int> {
-        distanceTravelledButton.setOnClickListener { eventConsumer.accept(DistanceTravelledPressed) }
         raceButton.setOnClickListener { eventConsumer.accept(
             RacePressed(getName(idToken).orEmpty())
         ) }
@@ -52,14 +52,9 @@ class MainActivity : AppCompatActivity() {
 
             override fun dispose() {
                 raceButton.setOnClickListener(null)
-                distanceTravelledButton.setOnClickListener(null)
                 logoutButton.setOnClickListener(null)
             }
         }
-    }
-
-    private fun gotoDistanceTravelled() {
-        startActivity(Intent(this, DistanceTravelledActivity::class.java))
     }
 
     private fun gotoLobby(trackLink: String) {

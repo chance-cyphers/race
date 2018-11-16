@@ -9,8 +9,7 @@ import io.reactivex.rxkotlin.addTo
 
 fun createEffectHandler(
     gotoLobby: (String) -> Unit,
-    logout: () -> Unit,
-    gotoDistanceTravelled: () -> Unit
+    logout: () -> Unit
 ): (Consumer<MainEvent>) -> Connection<MainEffect> {
 
     return fun(eventConsumer: Consumer<MainEvent>): Connection<MainEffect> {
@@ -32,7 +31,6 @@ fun createEffectHandler(
                         gotoLobby(effect.entrant.links.track)
                     }
                     is Logout -> logout()
-                    is GotoDistanceTravelled -> gotoDistanceTravelled()
                 }
             }
 

@@ -8,6 +8,5 @@ fun update(model: Int, event: MainEvent): Next<Int, MainEffect> {
         is RacePressed -> Next.dispatch(Effects.effects(CreateEntrant(event.username)))
         is EntrantCreated -> Next.dispatch(Effects.effects(GotoLobby(event.entrant)))
         is LogoutPressed -> Next.dispatch(Effects.effects(Logout))
-        DistanceTravelledPressed -> Next.dispatch(Effects.effects(GotoDistanceTravelled))
     }
 }
