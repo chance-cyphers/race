@@ -21,10 +21,12 @@ fun createEffectHandler(
                 when (effect) {
                     is CreateEntrant -> {
                         raceClient.createEntrant(CreateEntrantRequest(effect.username))
-                            .map { it.body() ?: throw Exception("whoops") }
-                            .subscribe { it ->
+                            .map { it.body() ?: throw Exception("error creating entrant") }
+                            .subscribe ({ it ->
                                 eventConsumer.accept(EntrantCreated(it))
-                            }
+                            }, {
+                                eventConsumer.accept(EntrantCreatedError(it.localizedMessage))
+                            })
                             .addTo(compositeDisposable)
                     }
                     is GotoLobby -> {

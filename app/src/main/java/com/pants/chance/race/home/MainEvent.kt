@@ -6,3 +6,4 @@ sealed class MainEvent
 data class RacePressed(val username: String) : MainEvent()
 object LogoutPressed : MainEvent()
 data class EntrantCreated(val entrant: CreateEntrantResponse) : MainEvent()
+data class EntrantCreatedError(val message: String) : MainEvent()

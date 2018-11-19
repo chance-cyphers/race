@@ -20,7 +20,7 @@ import net.hockeyapp.android.UpdateManager
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var controller: MobiusLoop.Controller<Int, MainEvent>
+    private lateinit var controller: MobiusLoop.Controller<MainModel, MainEvent>
     private lateinit var idToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,20 +34,21 @@ class MainActivity : AppCompatActivity() {
             createEffectHandler(this::gotoLobby, this::logout)
         ).init { First.first(it) }
 
-        controller = MobiusAndroid.controller(loopBuilder, 23)
+        controller = MobiusAndroid.controller(loopBuilder, MainModel())
         controller.connect(this::connectViews)
 
         checkForUpdates()
     }
 
-    private fun connectViews(eventConsumer: Consumer<MainEvent>): Connection<Int> {
+    private fun connectViews(eventConsumer: Consumer<MainEvent>): Connection<MainModel> {
         raceButton.setOnClickListener {
             eventConsumer.accept(RacePressed(getName(idToken).orEmpty()))
         }
         logoutButton.setOnClickListener { eventConsumer.accept(LogoutPressed) }
 
-        return object : Connection<Int> {
-            override fun accept(model: Int) {
+        return object : Connection<MainModel> {
+            override fun accept(model: MainModel) {
+                helloText.text = model.error ?: "Welcome to the race place"
             }
 
             override fun dispose() {
@@ -102,3 +103,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+data class MainModel(val error: String? = null)
