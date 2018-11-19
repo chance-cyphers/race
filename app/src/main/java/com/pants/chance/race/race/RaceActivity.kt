@@ -2,6 +2,7 @@ package com.pants.chance.race.race
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.Location
 import com.pants.chance.race.R
@@ -52,7 +53,9 @@ class RaceActivity : AppCompatActivity() {
                     raceText.text = "trackLink: ${model.trackLink}"
                 }
 
-                errorText.text = model.error ?: ""
+                if (model.error != null) {
+                    Toast.makeText(applicationContext, model.error, Toast.LENGTH_SHORT).show()
+                }
 
                 progressBar1.progress = model.progress1
                 progressBar2.progress = model.progress2
