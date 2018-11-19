@@ -51,6 +51,8 @@ class RaceActivity : AppCompatActivity() {
                 } else {
                     raceText.text = "trackLink: ${model.trackLink}"
                 }
+
+                errorText.text = model.error ?: ""
             }
 
             override fun dispose() {}
@@ -86,5 +88,6 @@ data class RaceModel(
     val trackLink: String,
     val lastLoc: Location? = null,
     val distance1: String? = null,
-    val distance2: String? = null
+    val distance2: String? = null,
+    val error: String? = null
 )

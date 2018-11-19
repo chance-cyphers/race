@@ -7,3 +7,4 @@ sealed class RaceEvent
 data class LocationUpdateEvent(val lat: Double, val lon: Double, val timestamp: Long) : RaceEvent()
 object PollTrackTick : RaceEvent()
 data class TrackFetched(val track: Track) : RaceEvent()
+data class TrackFetchError(val message: String) : RaceEvent()

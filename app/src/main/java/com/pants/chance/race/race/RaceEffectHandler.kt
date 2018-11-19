@@ -14,16 +14,18 @@ fun createEffectHandler(gotoFinish: (String) -> Unit): (Consumer<RaceEvent>) -> 
                     is UpdateLocationEffect -> {
                         raceClient.addLocation(effect.locLink, effect.loc)
                             .map { it.body() ?: throw Exception("error posting location") }
-                            .subscribe({}, { /*ignore update errors for now*/ })
+                            .subscribe({}, { /*ignore loc update errors for now*/ })
                     }
                     is FetchTrack -> {
                         raceClient.getTrack(effect.trackLink)
                             .map {
                                 it.body() ?: throw Exception("error fetching track in race: $it")
                             }
-                            .subscribe { it ->
+                            .subscribe({ it ->
                                 eventConsumer.accept(TrackFetched(it))
-                            }
+                            }, {
+                                eventConsumer.accept(TrackFetchError(it.localizedMessage))
+                            })
                     }
                     is GotoFinish -> {
                         gotoFinish(effect.winner)
