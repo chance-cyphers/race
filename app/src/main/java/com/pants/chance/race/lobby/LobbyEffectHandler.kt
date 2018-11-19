@@ -20,18 +20,22 @@ fun createEffectHandler(gotoRace: (Track) -> Unit): (Consumer<LobbyEvent>) -> Co
                     is FetchTrack -> {
                         raceClient.getTrack(effect.trackLink)
                             .map { it.body() ?: throw Exception("error fetching track") }
-                            .subscribe { it ->
+                            .subscribe ({ it ->
                                 eventConsumer.accept(TrackFetched(it, effect.trackLink))
-                            }
+                            }, {
+                                eventConsumer.accept(TrackFetchedError(it.localizedMessage))
+                            })
                             .addTo(compositeDisposable)
                     }
                     is FetchTrackWithDelay -> {
                         raceClient.getTrack(effect.trackLink)
                             .delay(1, TimeUnit.SECONDS)
                             .map { it.body() ?: throw Exception("error fetching track") }
-                            .subscribe { it ->
+                            .subscribe ({ it ->
                                 eventConsumer.accept(TrackFetched(it, effect.trackLink))
-                            }
+                            }, {
+                                eventConsumer.accept(TrackFetchedError(it.localizedMessage))
+                            })
                             .addTo(compositeDisposable)
                     }
                     is GotoRace -> {

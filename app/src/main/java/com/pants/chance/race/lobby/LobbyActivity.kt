@@ -21,7 +21,7 @@ class LobbyActivity : AppCompatActivity() {
         const val LOCATION_LINK = "locationLink"
     }
 
-    private lateinit var controller: MobiusLoop.Controller<String, LobbyEvent>
+    private lateinit var controller: MobiusLoop.Controller<LobbyModel, LobbyEvent>
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,22 +32,20 @@ class LobbyActivity : AppCompatActivity() {
         val loopBuilder =
             Mobius.loop(::update, createEffectHandler(this::gotoRace))
                 .init { init(it, trackLink) }
-        controller = MobiusAndroid.controller(loopBuilder, "finding match...")
+        controller = MobiusAndroid.controller(loopBuilder, LobbyModel("finding match..."))
         controller.connect(this::connectViews)
     }
 
-    private fun connectViews(eventConsumer: Consumer<LobbyEvent>): Connection<String> {
+    private fun connectViews(eventConsumer: Consumer<LobbyEvent>): Connection<LobbyModel> {
 
-        return object : Connection<String> {
-            override fun accept(model: String) {
-                lobbyText.text = model
+        return object : Connection<LobbyModel> {
+            override fun accept(model: LobbyModel) {
+                lobbyText.text = model.error ?: model.text
             }
 
             override fun dispose() {}
         }
     }
-
-
 
     private fun gotoRace(track: Track) {
         val gotoRaceIntent = Intent(this, RaceActivity::class.java)
@@ -74,3 +72,5 @@ class LobbyActivity : AppCompatActivity() {
     }
 
 }
+
+data class LobbyModel(val text: String, val error: String? = null)
