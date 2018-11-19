@@ -26,8 +26,8 @@ fun update(model: RaceModel, event: RaceEvent): Next<RaceModel, RaceEffect> {
 
             val updated = model.copy(distance1 = distance1, distance2 = distance2)
 
-            return if (event.track.status == "finished") {
-                Next.next(updated, Effects.effects(GotoFinish(event.track.status)))
+            return if (event.track.status == "finished" && event.track.winner != null) {
+                Next.next(updated, Effects.effects(GotoFinish(event.track.winner)))
             } else {
                 Next.next(updated)
             }

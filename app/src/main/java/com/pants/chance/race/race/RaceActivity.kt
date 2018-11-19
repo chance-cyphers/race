@@ -17,6 +17,10 @@ import kotlinx.android.synthetic.main.activity_race.*
 
 class RaceActivity : AppCompatActivity() {
 
+    companion object {
+        const val WINNER = "winner"
+    }
+
     private lateinit var controller: MobiusLoop.Controller<RaceModel, RaceEvent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,13 +42,6 @@ class RaceActivity : AppCompatActivity() {
         controller.connect(this::connectViews)
     }
 
-    private fun gotoFinish() {
-        val gotoFinishIntent = Intent(this, FinishActivity::class.java)
-//        gotoFinishIntent.putExtra("", "")
-        startActivity(gotoFinishIntent)
-        finish()
-    }
-
     private fun connectViews(eventConsumer: Consumer<RaceEvent>): Connection<RaceModel> {
 
         return object : Connection<RaceModel> {
@@ -58,6 +55,13 @@ class RaceActivity : AppCompatActivity() {
 
             override fun dispose() {}
         }
+    }
+
+    private fun gotoFinish(winner: String) {
+        val gotoFinishIntent = Intent(this, FinishActivity::class.java)
+        gotoFinishIntent.putExtra(WINNER, winner)
+        startActivity(gotoFinishIntent)
+        finish()
     }
 
     public override fun onResume() {

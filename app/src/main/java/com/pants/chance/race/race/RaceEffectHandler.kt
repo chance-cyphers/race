@@ -4,7 +4,7 @@ import com.pants.chance.race.raceClient
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 
-fun createEffectHandler(gotoFinish: () -> Unit): (Consumer<RaceEvent>) -> Connection<RaceEffect> {
+fun createEffectHandler(gotoFinish: (String) -> Unit): (Consumer<RaceEvent>) -> Connection<RaceEffect> {
 
     return fun(eventConsumer: Consumer<RaceEvent>): Connection<RaceEffect> {
         return object : Connection<RaceEffect> {
@@ -24,7 +24,7 @@ fun createEffectHandler(gotoFinish: () -> Unit): (Consumer<RaceEvent>) -> Connec
                             }
                     }
                     is GotoFinish -> {
-                        gotoFinish()
+                        gotoFinish(effect.winner)
                     }
                 }
             }
