@@ -52,5 +52,5 @@ data class Track(
     data class Links(val locationUpdate: String, val self: String)
 }
 
-data class Entrant(val id: Int, val userId: String, val distance: Double?)
+data class Entrant(val id: Int, val userId: String, val distance: Double)
 data class Location(val time: Long, val lat: Double, val lon: Double)

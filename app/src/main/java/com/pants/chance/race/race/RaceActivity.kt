@@ -53,6 +53,9 @@ class RaceActivity : AppCompatActivity() {
                 }
 
                 errorText.text = model.error ?: ""
+
+                progressBar1.progress = model.progress1
+                progressBar2.progress = model.progress2
             }
 
             override fun dispose() {}
@@ -89,5 +92,7 @@ data class RaceModel(
     val lastLoc: Location? = null,
     val distance1: String? = null,
     val distance2: String? = null,
-    val error: String? = null
+    val error: String? = null,
+    val progress1: Int = 0,
+    val progress2: Int = 0
 )

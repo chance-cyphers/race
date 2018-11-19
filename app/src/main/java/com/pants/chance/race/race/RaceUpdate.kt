@@ -23,10 +23,15 @@ fun update(model: RaceModel, event: RaceEvent): Next<RaceModel, RaceEffect> {
             val distance1 = "${entrant1.userId}: ${String.format("%.4f", entrant1.distance)} km"
             val distance2 = "${entrant2.userId}: ${String.format("%.4f", entrant2.distance)} km"
 
+            val progress1 = (entrant1.distance * 100).toInt()
+            val progress2 = (entrant2.distance * 100).toInt()
+
             val updated = model.copy(
                 distance1 = distance1,
                 distance2 = distance2,
-                error = null
+                error = null,
+                progress1 = progress1,
+                progress2 = progress2
             )
 
             return if (event.track.status == "finished" && event.track.winner != null) {
