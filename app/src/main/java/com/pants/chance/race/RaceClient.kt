@@ -13,16 +13,16 @@ import retrofit2.http.Url
 interface RaceClient {
 
     @POST("/v2/entrant")
-    fun createEntrant(@Body request: CreateEntrantRequest) : Single<Response<CreateEntrantResponse>>
+    fun createEntrant(@Body request: CreateEntrantRequest): Single<Response<CreateEntrantResponse>>
 
     @GET
-    fun getTrack(@Url url: String) : Single<Response<Track>>
+    fun getTrack(@Url url: String): Single<Response<Track>>
 
     @POST
-    fun addLocation(@Url url: String, @Body request: Location) : Single<Response<Location>>
+    fun addLocation(@Url url: String, @Body request: Location): Single<Response<Location>>
 
     companion object {
-        fun create() : RaceClient {
+        fun create(): RaceClient {
             val retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -38,14 +38,19 @@ val raceClient by lazy {
     RaceClient.create()
 }
 
-data class CreateEntrantRequest (val userId: String)
-data class CreateEntrantResponse (val userId: String, val id: Int, val links: Links) {
-    data class Links (val track: String)
+data class CreateEntrantRequest(val userId: String)
+data class CreateEntrantResponse(val userId: String, val id: Int, val links: Links) {
+    data class Links(val track: String)
 }
 
-data class Track (val status: String, val entrants: List<Entrant>, val links: Links) {
-    data class Links (val locationUpdate: String, val self: String)
+data class Track(
+    val status: String,
+    val entrants: List<Entrant>,
+    val winner: String?,
+    val links: Links
+) {
+    data class Links(val locationUpdate: String, val self: String)
 }
 
-data class Entrant (val id: Int, val userId: String, val distance: Double?)
-data class Location (val time: Long, val lat: Double, val lon: Double)
+data class Entrant(val id: Int, val userId: String, val distance: Double?)
+data class Location(val time: Long, val lat: Double, val lon: Double)

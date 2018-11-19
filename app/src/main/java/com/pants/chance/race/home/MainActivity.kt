@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun connectViews(eventConsumer: Consumer<MainEvent>): Connection<Int> {
-        raceButton.setOnClickListener { eventConsumer.accept(
-            RacePressed(getName(idToken).orEmpty())
-        ) }
+        raceButton.setOnClickListener {
+            eventConsumer.accept(RacePressed(getName(idToken).orEmpty()))
+        }
         logoutButton.setOnClickListener { eventConsumer.accept(LogoutPressed) }
 
         return object : Connection<Int> {

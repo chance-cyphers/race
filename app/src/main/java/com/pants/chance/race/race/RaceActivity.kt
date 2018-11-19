@@ -1,9 +1,11 @@
 package com.pants.chance.race.race
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pants.chance.race.Location
 import com.pants.chance.race.R
+import com.pants.chance.race.finish.FinishActivity
 import com.pants.chance.race.lobby.LobbyActivity
 import com.spotify.mobius.Connection
 import com.spotify.mobius.First
@@ -22,7 +24,7 @@ class RaceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_race)
 
         val loopBuilder = Mobius
-            .loop(::update, createEffectHandler())
+            .loop(::update, createEffectHandler(this::gotoFinish))
             .init { First.first(it) }
             .eventSources(
                 LocationEventSource(this),
@@ -34,6 +36,13 @@ class RaceActivity : AppCompatActivity() {
 
         controller = MobiusAndroid.controller(loopBuilder, RaceModel(locLink, trackLink))
         controller.connect(this::connectViews)
+    }
+
+    private fun gotoFinish() {
+        val gotoFinishIntent = Intent(this, FinishActivity::class.java)
+//        gotoFinishIntent.putExtra("", "")
+        startActivity(gotoFinishIntent)
+        finish()
     }
 
     private fun connectViews(eventConsumer: Consumer<RaceEvent>): Connection<RaceModel> {
