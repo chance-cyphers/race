@@ -47,18 +47,14 @@ class RaceActivity : AppCompatActivity() {
 
         return object : Connection<RaceModel> {
             override fun accept(model: RaceModel) {
-                if (model.distance1 != null && model.distance2 != null) {
-                    raceText.text = "${model.distance1}\n\n${model.distance2}"
-                } else {
-                    raceText.text = "trackLink: ${model.trackLink}"
-                }
+                entrant1Text.text = model.label1
+                entrant2Text.text = model.label2
+                progressBar1.progress = model.progress1
+                progressBar2.progress = model.progress2
 
                 if (model.error != null) {
                     Toast.makeText(applicationContext, model.error, Toast.LENGTH_SHORT).show()
                 }
-
-                progressBar1.progress = model.progress1
-                progressBar2.progress = model.progress2
             }
 
             override fun dispose() {}
@@ -93,8 +89,8 @@ data class RaceModel(
     val locLink: String,
     val trackLink: String,
     val lastLoc: Location? = null,
-    val distance1: String? = null,
-    val distance2: String? = null,
+    val label1: String? = null,
+    val label2: String? = null,
     val error: String? = null,
     val progress1: Int = 0,
     val progress2: Int = 0
